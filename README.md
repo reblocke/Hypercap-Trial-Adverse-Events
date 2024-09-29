@@ -30,3 +30,4 @@ You also must extract the data from Du and Shi (2024) Sci Data - https://doi.org
 
 
 the code currently uses the .csv files but will likely be updated to use the json files in the future. 
+there is currently a zip file that contains the needed csv files (Data.csv) that can be used for easy access (just unzip it in the working folder)

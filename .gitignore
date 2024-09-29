@@ -6,3 +6,6 @@ Data/
 ae by arm data.xlsx
 ae_by_arm_data.dta
 openfda_cache.sqlite
+*.dta
+by arm data.xlsx
+by trial data.xlsx

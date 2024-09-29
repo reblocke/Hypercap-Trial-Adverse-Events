@@ -5,8 +5,8 @@ clear
 
 /* Location of Data */ 
 
-cd "/Users/blocke/Box Sync/Residency Personal Files/Scholarly Work/Locke Research Projects/Hypercap-Trial-Adverse-Events" //mac 
-//cd "C:\Users\reblo\Box\Residency Personal Files\Stats\Clinical Trials Processed" //windows
+//cd "/Users/blocke/Box Sync/Residency Personal Files/Scholarly Work/Locke Research Projects/Hypercap-Trial-Adverse-Events" //mac 
+cd "C:\Users\reblo\Box\Residency Personal Files\Scholarly Work\Locke Research Projects\Hypercap-Trial-Adverse-Events" //windows
 
 
 program define datetime 
