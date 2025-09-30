@@ -1,0 +1,14 @@
+name: hypercap-trial-ae
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - jupyter
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - pip
+  - pip:
+      - requests
+      - scikit-learn

@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Locke
+    given-names: Brian W.
+    orcid: "0000-0002-XXXX-XXXX"
+  - family-names: Anderson-Bell
+    given-names: Dustin
+title: "Hypercap Trial Adverse Events"
+version: 0.1.0
+doi: 
+date-released: 2024-10-01
+url: "https://github.com/reblocke/Hypercap-Trial-Adverse-Events"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Anderson-Bell
+      given-names: Dustin
+    - family-names: Locke
+      given-names: Brian W.
+  title: "Hypercapnic respiratory failure is infrequently reported as an adverse event in clinical trials."
+  journal: "CHEST"
+  year: 2024
