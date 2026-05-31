@@ -140,3 +140,51 @@ See [`LICENSE`](./LICENSE).
 ## Maintainer
 
 Maintainer: @reblocke (via GitHub Issues)
+
+## LLM and Repository Readiness Notes
+
+### Description
+Hypercapnic Respiratory Failure is Infrequently Reported as an Adverse Event in Clinical Trials
+
+### Instructions
+Start with this README, then inspect the files listed under Repository Layout. For computational workflows, run commands from the repository root and avoid committing generated outputs unless a release explicitly calls for them.
+
+### Authors, Funding, and Acknowledgments
+Maintainer: Brian W. Locke (`@reblocke`, ORCID 0000-0002-3588-5238). Preserve any project-specific author, funding, and acknowledgment details already listed elsewhere in the repository or accompanying publication.
+
+### Repository Layout
+- `CITATION.cff`
+- `CONTRIBUTING.md`
+- `ClinicalTrialsGov.do`
+- `Data.zip`
+- `Drafts/2024-3-11 Data Output.docx`
+- `Drafts/2024-3-11 Hypercap Outcome Abs Draft.docx`
+- `Drafts/Hypoventilation poster CHEST 2024.pptx  -  Read-Only.pptx`
+- `Drug Safety 2023 EHR for safety.pdf`
+- `FAERS access.ipynb`
+- `How FDA defines ADE.pdf`
+- `Hypoventilation poster CHEST 2024.pdf`
+- `Hypoventilation poster CHEST 2024.pptx`
+- `LICENSE`
+- `ML for ADE.pdf`
+
+### Data and Codebook
+Trial-registry/public extracted data; verify source licensing
+
+### Workflow / Script Order
+Review notebook workflow
+
+### Dependencies / Environment
+Jupyter requirements if present
+
+### Citation
+No publication DOI is assigned to this repository. Cite the GitHub repository URL and the commit or release used.
+
+### License
+Repository license status: MIT. See the root license file when present. Third-party and publisher materials remain under their original terms.
+
+### Manuscript Status
+No manuscript version expected yet; use abstract/repo summary Do not add unpublished manuscript text
+
+### Contact
+Maintainer: Brian W. Locke (`@reblocke`). Use GitHub issues or pull requests for repository-specific questions when the repository is public.
