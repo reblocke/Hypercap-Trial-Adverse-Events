@@ -8,6 +8,7 @@ dependencies:
   - numpy
   - matplotlib
   - seaborn
+  - openpyxl
   - pip
   - pip:
       - requests

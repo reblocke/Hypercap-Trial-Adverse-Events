@@ -1,190 +1,125 @@
 # Hypercap Trial Adverse Events
 
-> **Work in progress.** Analytic code and notes for examining how often **hypercapnic respiratory failure** is reported as a (serious) adverse event in clinical trials results on ClinicalTrials.gov, with exploratory comparisons to spontaneous reporting systems (FAERS now; VAERS possibly later).
+[![DOI](https://img.shields.io/badge/CHEST%20abstract-10.1016%2Fj.chest.2024.06.3377-blue)](https://doi.org/10.1016/j.chest.2024.06.3377)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Cite with CFF](https://img.shields.io/badge/citation-CFF-blueviolet)](CITATION.cff)
 
----
+Code and public presentation materials for the CHEST 2024 abstract, **"Hypercapnic respiratory failure is infrequently reported as an adverse event in clinical trials"**.
 
-## Links & IDs
-- **Project repo:** https://github.com/reblocke/Hypercap-Trial-Adverse-Events  
-- **Poster/abstract (CHEST 2024):** see `Hypoventilation poster CHEST 2024.pdf` (in repo) and citation in *Cite this work* below.  
-- **Source data (CT.gov structured results):** Du & Shi dataset (Scientific Data, 2024) and Figshare collection  
-  - Paper: https://www.nature.com/articles/s41597-023-02869-7  
-  - Dataset: https://doi.org/10.6084/m9.figshare.c.6860254.v1  
+## Links And Identifiers
 
----
+| Item | Link |
+| --- | --- |
+| CHEST abstract | [10.1016/j.chest.2024.06.3377](https://doi.org/10.1016/j.chest.2024.06.3377) |
+| Abstract citation | CHEST. 2024;166(4):A5688 |
+| Public poster | [abstract/hypercap-trial-ae-chest-2024-poster.pdf](abstract/hypercap-trial-ae-chest-2024-poster.pdf) |
+| Poster summary | [abstract/hypercap-trial-ae-chest-2024-summary.md](abstract/hypercap-trial-ae-chest-2024-summary.md) |
+| Source-data paper | [Scientific Data. 2024;11:41](https://doi.org/10.1038/s41597-023-02869-7) |
+| Source-data collection | [Figshare collection 10.6084/m9.figshare.c.6860254.v1](https://doi.org/10.6084/m9.figshare.c.6860254.v1) |
+| Machine-readable index | [llms.txt](llms.txt) |
 
-## Status & scope
+## Project Summary
 
-- This repository currently contains:
-  - **Stata analysis** for trial‑level and arm‑level counts from the Du & Shi CT.gov results dataset (`ClinicalTrialsGov.do`).
-  - **Jupyter notebook(s)** for exploratory **FAERS** access (`FAERS access.ipynb`).
-  - **Poster files** from the CHEST 2024 presentation (`Hypoventilation poster CHEST 2024.pdf` / `.pptx`).
+This repository evaluates how often hypercapnic respiratory failure, hypoventilation, respiratory depression, or closely related adverse-event terms appear in structured ClinicalTrials.gov results. The primary workflow uses the Du and Shi ClinicalTrials.gov results dataset to aggregate adverse-event reporting at the trial-arm and trial levels.
 
-- **Planned**: finalize FAERS import/aggregation and consider **VAERS** rate comparisons; add figure‑/table‑generation scripts; cut a tagged release and archive to Zenodo; add tests and environment files.
+The repository is an abstract/poster code repository, not a full manuscript repository. It does not contain a peer-reviewed full article, PMCID, or publisher manuscript text for this project.
 
----
+## Authors, Funding, And Disclosures
 
-## Quick start
+| Contributor | Role | Affiliation |
+| --- | --- | --- |
+| Dustin Anderson-Bell, MD | Abstract author | University of Utah Health, Division of Pulmonary and Critical Care |
+| Brian W. Locke, MD, MSc | Abstract author, repository maintainer | University of Utah Health and Intermountain Medical Center, Pulmonary and Critical Care |
 
-### Option A — Use the small convenience archive in this repo
-1. **Clone** the repo and **unzip** `Data.zip` at the repository root (creates a `Data/` folder with required CSVs).
-2. Run Stata (see *Running the Stata analysis* below) or open the notebook(s) for exploratory FAERS steps.
+Funding/support listed on the poster: ASPIRE Fellowship, NIH NRSA `5T32HL105321`, and Intermountain Fund support for Brian W. Locke. Disclosure listed on the poster: Brian W. Locke has ownership in Mountain Biometrics, unrelated to this project.
 
-### Option B — Pull the full CT.gov results dataset from Figshare
-1. Download the **Figshare collection** for Du & Shi (see link above) and place files under `Data/` with this structure:
-   ```
-   Data/
-   ├── biobert_validation.xlsx
-   ├── csv/
-   │   ├── ade_sample.csv
-   │   ├── efficacy_df.csv
-   │   ├── efficacy_sample.csv
-   │   └── safety_df.csv
-   ├── json/
-   │   ├── ade_sample.json
-   │   ├── efficacy_df.json
-   │   ├── efficacy_sample.json
-   │   └── safety_df.json
-   └── pickle/
-       ├── efficacy_df.pickle
-       └── safety_df.pickle
-   ```
-   > **Note:** current code reads the **CSV** files; JSON support is intended later.
+## Data Access And Boundaries
 
----
+The analysis uses public ClinicalTrials.gov-derived structured results from Du and Shi. The repository no longer tracks a bundled `Data.zip` snapshot; download the source data from Figshare and place the CSV files locally as shown below.
 
-## Running the Stata analysis
-
-1. Open `ClinicalTrialsGov.do` in Stata.
-2. **Edit the local path** near the top of the file to point to your local clone.
-3. Run the `.do` file.  
-   - Expected outputs: `by_arm_data.dta`, `by_trial_data.dta`, `trials_data.dta` plus Excel exports.
-
-> **Requirements:** Stata (v16+ recommended). No PHI/PII is included.
-
----
-
-## Running the FAERS exploration (prototype)
-
-- Open `FAERS access.ipynb` in Jupyter.  
-- Prototype only; may require installing packages manually.  
-- **Planned:** scripted ingestion and harmonization with CT.gov AE categories.
-
----
-
-## Repository layout
-
-```
-├── ClinicalTrialsGov.do
-├── Data.zip
-├── FAERS access.ipynb
-├── Hypoventilation poster CHEST 2024.pdf / .pptx
-├── How FDA defines ADE.pdf
-├── ML for ADE.pdf
-├── Drug Safety 2023 EHR for safety.pdf
-├── SE-table_Update-7_FINAL_022822.xlsx
-├── by_arm_data.dta / by_trial_data.dta / trials_data.dta
-├── by arm data.xlsx / by trial data.xlsx
-├── LICENSE
-└── README.md
+```text
+data/raw/csv/efficacy_df.csv
+data/raw/csv/safety_df.csv
 ```
 
----
+Local data extracts, generated `.dta` files, Excel exports, logs, and OpenFDA caches are ignored by git. Do not commit third-party article PDFs, local data mirrors, generated outputs, or notebook execution outputs.
 
-## Data notes
+## Quick Start
 
-- **Primary source**: CT.gov results dataset curated by Du & Shi (2024, *Scientific Data*).  
-- **Convenience**: `Data.zip` contains CSVs; for full replication, use Figshare.
+1. Clone the repository.
+2. Download the Du and Shi Figshare data collection.
+3. Place `efficacy_df.csv` and `safety_df.csv` under `data/raw/csv/`.
+4. Run the Stata workflow from the repository root:
 
-**Ethics & privacy.** All data are **public**; no PHI/PII included.
+```bash
+stata-mp -b do ClinicalTrialsGov.do data/raw outputs/stata
+```
 
----
+The script also accepts omitted arguments:
 
-## Results mapping
+```bash
+stata-mp -b do ClinicalTrialsGov.do
+```
 
-| Output / artifact | Script/notebook | Notes |
-|-------------------|-----------------|-------|
-| Trial‑level counts | `ClinicalTrialsGov.do` | Produces `by_trial_data.*` |
-| Arm‑level AE counts | `ClinicalTrialsGov.do` | Produces `by_arm_data.*` |
-| Poster (CHEST 2024) | `Hypoventilation poster CHEST 2024.*` | Presentation materials |
+With omitted arguments, it expects inputs under `data/raw/` and writes generated files under `outputs/stata/`.
 
----
+## Workflow And Outputs
 
-## Cite this work
+| Step | Command or file | Purpose | Outputs |
+| --- | --- | --- | --- |
+| Source data download | Figshare collection | Obtain public ClinicalTrials.gov result CSVs | Local `data/raw/csv/` files |
+| Trial/adverse-event aggregation | `ClinicalTrialsGov.do` | Build trial-level and arm-level adverse-event summaries | `outputs/stata/derived/*.dta`, `outputs/stata/exports/*.xlsx`, dated logs |
+| FAERS exploration | `FAERS access.ipynb` | Optional prototype for OpenFDA/FAERS access | Local notebook outputs and caches only |
+| Abstract/poster context | `abstract/` | Public poster artifact and author-owned summary | PDF poster and Markdown summary |
 
-- **CHEST 2024 abstract/poster**  
-  Anderson‑Bell D, Locke BW. *Hypercapnic respiratory failure is infrequently reported as an adverse event in clinical trials.* CHEST. 2024;166(4):A5688.
+## Dependencies
 
-- **CT.gov dataset**  
-  Shi X, Du J. *Constructing a finer‑grained representation of clinical trial results from ClinicalTrials.gov.* *Scientific Data.* 2024;11:41. https://doi.org/10.6084/m9.figshare.c.6860254.v1
+| Component | Requirement |
+| --- | --- |
+| Stata | Stata 17 or later for the primary `.do` workflow |
+| Stata scheme | `cleanplots` is optional; the script continues if unavailable |
+| Python/Jupyter | See `environment.yml` or `requirements.txt` for notebook exploration |
+| External data | Du and Shi Figshare CSV files |
 
----
+## Repository Inventory
 
-## Contributing & collaboration
+| Path | Description |
+| --- | --- |
+| `ClinicalTrialsGov.do` | Primary Stata analysis workflow for ClinicalTrials.gov adverse-event aggregation |
+| `FAERS access.ipynb` | Optional exploratory notebook for OpenFDA/FAERS access |
+| `abstract/` | Public author-owned CHEST 2024 poster artifact and summary |
+| `data_dictionary.md`, `data_dictionary.csv` | Human-readable and machine-readable data dictionary |
+| `llms.txt` | Machine-readable repository index for LLMs and search agents |
+| `CITATION.cff` | Structured repository and abstract citation metadata |
+| `environment.yml`, `requirements.txt` | Notebook/Python environment manifests |
 
-We welcome contributions to:
-- Finalize FAERS ingestion and harmonization.  
-- Explore VAERS comparisons.  
-- Add reproducible figure/table scripts.
+## Data Dictionary
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+Use [data_dictionary.md](data_dictionary.md) for a human-readable codebook and [data_dictionary.csv](data_dictionary.csv) for a machine-readable variable inventory. The dictionary documents source CSV fields, derived adverse-event flags, arm/trial aggregation variables, output artifacts, and legacy spellings preserved from the analysis code.
 
----
+## Results Mapping
+
+| Result in abstract/poster | Workflow source |
+| --- | --- |
+| Counts of completed and unfinished trials | `ClinicalTrialsGov.do`, trial-level aggregation from `efficacy_df.csv` and `safety_df.csv` |
+| Definite and possible hypercapnia adverse-event counts | `ClinicalTrialsGov.do`, adverse-event term flags |
+| Trial-arm and trial-level event summaries | `outputs/stata/exports/by arm data.xlsx` and `outputs/stata/exports/by trial data.xlsx` after local run |
+| Poster narrative and displayed values | `abstract/hypercap-trial-ae-chest-2024-poster.pdf` and Markdown summary |
+
+## Citation
+
+If using the repository code, cite the repository release or commit and the CHEST abstract:
+
+> Anderson-Bell D, Locke BW. Hypercapnic respiratory failure is infrequently reported as an adverse event in clinical trials. CHEST. 2024;166(4):A5688. doi:[10.1016/j.chest.2024.06.3377](https://doi.org/10.1016/j.chest.2024.06.3377)
+
+If using the ClinicalTrials.gov structured results data, also cite:
+
+> Shi X, Du J. Constructing a finer-grained representation of clinical trial results from ClinicalTrials.gov. Scientific Data. 2024;11:41. doi:[10.1038/s41597-023-02869-7](https://doi.org/10.1038/s41597-023-02869-7)
 
 ## License
 
-See [`LICENSE`](./LICENSE).
+Repository code and author-owned documentation are released under the [MIT License](LICENSE). Third-party source data, article pages, reference papers, and external databases remain under their original terms. The CHEST abstract and source-data records should be linked and cited rather than mirrored as publisher text.
 
----
+## Contributing And Contact
 
-## Maintainer
-
-Maintainer: @reblocke (via GitHub Issues)
-
-## LLM and Repository Readiness Notes
-
-### Description
-Hypercapnic Respiratory Failure is Infrequently Reported as an Adverse Event in Clinical Trials
-
-### Instructions
-Start with this README, then inspect the files listed under Repository Layout. For computational workflows, run commands from the repository root and avoid committing generated outputs unless a release explicitly calls for them.
-
-### Authors, Funding, and Acknowledgments
-Maintainer: Brian W. Locke (`@reblocke`, ORCID 0000-0002-3588-5238). Preserve any project-specific author, funding, and acknowledgment details already listed elsewhere in the repository or accompanying publication.
-
-### Repository Layout
-- `CITATION.cff`
-- `CONTRIBUTING.md`
-- `ClinicalTrialsGov.do`
-- `Data.zip`
-- `Drafts/2024-3-11 Data Output.docx`
-- `Drafts/2024-3-11 Hypercap Outcome Abs Draft.docx`
-- `Drafts/Hypoventilation poster CHEST 2024.pptx  -  Read-Only.pptx`
-- `Drug Safety 2023 EHR for safety.pdf`
-- `FAERS access.ipynb`
-- `How FDA defines ADE.pdf`
-- `Hypoventilation poster CHEST 2024.pdf`
-- `Hypoventilation poster CHEST 2024.pptx`
-- `LICENSE`
-- `ML for ADE.pdf`
-
-### Data and Codebook
-Trial-registry/public extracted data; verify source licensing
-
-### Workflow / Script Order
-Review notebook workflow
-
-### Dependencies / Environment
-Jupyter requirements if present
-
-### Citation
-No publication DOI is assigned to this repository. Cite the GitHub repository URL and the commit or release used.
-
-### License
-Repository license status: MIT. See the root license file when present. Third-party and publisher materials remain under their original terms.
-
-### Manuscript Status
-No manuscript version expected yet; use abstract/repo summary Do not add unpublished manuscript text
-
-### Contact
-Maintainer: Brian W. Locke (`@reblocke`). Use GitHub issues or pull requests for repository-specific questions when the repository is public.
+See [CONTRIBUTING.md](CONTRIBUTING.md). For repository-specific questions, open a GitHub issue or pull request. Maintainer: Brian W. Locke (`@reblocke`, ORCID [`0000-0002-3588-5238`](https://orcid.org/0000-0002-3588-5238)).

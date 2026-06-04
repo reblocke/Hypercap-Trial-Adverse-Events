@@ -1,40 +1,62 @@
-// Code to explore the clinical trials gov database processing
-// Codeset described in https://www.nature.com/articles/s41597-023-02869-7 
+// Code to explore the ClinicalTrials.gov database processing.
+// Source dataset described in https://doi.org/10.1038/s41597-023-02869-7.
 
-clear
+version 17.0
+clear all
+set more off
 
-/* Location of Data */ 
+args input_root output_root
+if "`input_root'" == "" {
+	local input_root "data/raw"
+}
+if "`output_root'" == "" {
+	local output_root "outputs/stata"
+}
 
-//cd "/Users/blocke/Box Sync/Residency Personal Files/Scholarly Work/Locke Research Projects/Hypercap-Trial-Adverse-Events" //mac 
-cd "C:\Users\reblo\Box\Residency Personal Files\Scholarly Work\Locke Research Projects\Hypercap-Trial-Adverse-Events" //windows
+local csv_dir "`input_root'/csv"
+local efficacy_csv "`csv_dir'/efficacy_df.csv"
+local safety_csv "`csv_dir'/safety_df.csv"
 
+foreach required_file in "`efficacy_csv'" "`safety_csv'" {
+	capture confirm file "`required_file'"
+	if _rc {
+		display as error "Missing required source CSV: `required_file'"
+		display as error "Download the Du and Shi Figshare data and place efficacy_df.csv and safety_df.csv under `input_root'/csv/."
+		exit 601
+	}
+}
 
-program define datetime 
-end
+capture mkdir "outputs"
+capture mkdir "`output_root'"
+capture mkdir "`output_root'/derived"
+capture mkdir "`output_root'/exports"
+capture mkdir "`output_root'/figures"
 
-/* Generate locations for figures and back-up log files for when I forget to save */ 
-capture mkdir "Results and Figures"
-capture mkdir "Results and Figures/$S_DATE/" //make new folder for figure output if needed
-capture mkdir "Results and Figures/$S_DATE/Logs/" //new folder for stata logs
-local a1=substr(c(current_time),1,2)
-local a2=substr(c(current_time),4,2)
-local a3=substr(c(current_time),7,2)
-local b = "ClinicalTrialsGov.do" // do file name
-copy "`b'" "Results and Figures/$S_DATE/Logs/(`a1'_`a2'_`a3')`b'"
+local today = date(c(current_date), "DMY")
+local date_stamp : display %tdCCYY-NN-DD `today'
+local time_stamp = subinstr(c(current_time), ":", "", .)
+local run_dir "`output_root'/`date_stamp'"
+capture mkdir "`run_dir'"
+capture mkdir "`run_dir'/Logs"
 
-set scheme cleanplots
+capture confirm file "ClinicalTrialsGov.do"
+if !_rc {
+	copy "ClinicalTrialsGov.do" "`run_dir'/Logs/`time_stamp'_ClinicalTrialsGov.do", replace
+}
+
+capture set scheme cleanplots
 graph set window fontface "Helvetica"
 
 capture log close
-log using "Results and Figures/$S_DATE/Logs/temp.log", append
+log using "`run_dir'/Logs/temp.log", replace text
 
 
 /* Currently unused data */ 
-//import delimited using "Data/csv/ade_sample.csv"
-//import delimited using "Data/csv/efficacy_sample.csv"
+//import delimited using "`csv_dir'/ade_sample.csv"
+//import delimited using "`csv_dir'/efficacy_sample.csv"
 
 clear 
-import delimited using "Data/csv/efficacy_df.csv"
+import delimited using "`efficacy_csv'"
 
 /* Data cleaning */ 
 destring completion_year enrollment_num ci_lower_limit ci_upper_limit, replace force
@@ -90,10 +112,10 @@ drop study_type outcome_id info outcome_type outcome_title p_value method method
 
 /* compare trial types */
 
-save trials_data, replace
+save "`output_root'/derived/trials_data.dta", replace
 
 clear 
-import delimited using "Data/csv/safety_df.csv"
+import delimited using "`safety_csv'"
 
 //Data cleaning: 
 replace category = lower(category)
@@ -196,7 +218,7 @@ bysort nct_id: egen hypovent_ae_in_trial = max(hypovent_ae)
 bysort nct_id: egen pos_hypoven_ae_in_trial = max(pos_hypovent_ae)
 
 //Merge data from trials data
-merge m:1 nct_id using trials_data, update generate(_merge_trials) force
+merge m:1 nct_id using "`output_root'/derived/trials_data.dta", update generate(_merge_trials) force
 
 //Why so many missing from the efficacy document? 
 quietly levelsof nct_id, local(unique_nct_ids)
@@ -221,9 +243,9 @@ drop if data_source == 2 // drop trials with only efficacy data
 
 //Export
 
-save ae_by_arm_data, replace
-//export excel using "ae by arm data.xlsx", firstrow(varlabels) keepcellfmt replace 
-use ae_by_arm_data, clear
+save "`output_root'/derived/ae_by_arm_data.dta", replace
+// Full merged arm-level output can be exported here if needed.
+use "`output_root'/derived/ae_by_arm_data.dta", clear
 // Split into a "by trial dataset" and a "by-arm" dataset for later use
 
 summarize events, meanonly
@@ -270,11 +292,11 @@ display "Total number of pos hypercapnia AEs: " r(sum)
 bysort nct_id: egen num_hypovent_ae_in_trial = total(num_hypovent_ae_in_arm) 
 bysort nct_id: egen num_pos_hypoven_ae_in_trial = total(num_pos_hypoven_ae_in_arm) 
 
-save by_arm_data, replace
+save "`output_root'/derived/by_arm_data.dta", replace
 
 preserve
 keep arm_title nct_id hypovent_ae_in_arm pos_hypoven_ae_in_arm num_hypovent_ae_in_arm num_pos_hypoven_ae_in_arm n_in_arm n_in_trial hypovent_ae_in_trial num_hypovent_ae_in_trial pos_hypoven_ae_in_trial num_pos_hypoven_ae_in_trial completion_year trial_phase funder_type condition_mesh condition 
-export excel using "by arm data.xlsx", firstrow(varlabels) keepcellfmt replace 
+export excel using "`output_root'/exports/by arm data.xlsx", firstrow(varlabels) keepcellfmt replace
 restore
 
 keep allocation age all_inters completion_year enrollment_num countries condition_mesh condition funder_name funder_type groups intervention_mesh intervention_type intervention nct_id n_in_trial pos_hypoven_ae_in_trial num_pos_hypoven_ae_in_trial hypovent_ae_in_trial num_hypovent_ae_in_trial trial_phase
@@ -291,8 +313,8 @@ display "Total number of hypercapnia AEs: " r(sum)
 summarize num_pos_hypoven_ae_in_trial, detail
 display "Total number of pos hypercapnia AEs: " r(sum)
 
-save by_trial_data, replace
-export excel using "by trial data.xlsx", firstrow(varlabels) keepcellfmt replace 
+save "`output_root'/derived/by_trial_data.dta", replace
+export excel using "`output_root'/exports/by trial data.xlsx", firstrow(varlabels) keepcellfmt replace
 
 summarize n_in_trial, meanonly
 display "Total number of patients included: " r(sum)
@@ -311,7 +333,7 @@ display "Total number of patients in trials with pos hypovent AE: " r(sum)
 
 // Calculate Summary Statistics for ALL trials, not just those reporting efficacy outcomes: 
 
-use ae_by_arm_data, clear
+use "`output_root'/derived/ae_by_arm_data.dta", clear
 
 keep nct_id n_in_trial hypovent_ae_in_trial pos_hypoven_ae_in_trial data_source
 duplicates report
@@ -326,9 +348,7 @@ display "Total number of patients in trials only reporting adverse events: " r(s
 summarize n_in_trial if data_source == 3, meanonly
 display "Total number of patients in trials reporting adverse events and efficacy: " r(sum)
 
-
-
-
+log close
 
 
 

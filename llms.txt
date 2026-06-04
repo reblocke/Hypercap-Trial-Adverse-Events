@@ -1,0 +1,48 @@
+# Hypercap Trial Adverse Events
+
+Repository: https://github.com/reblocke/Hypercap-Trial-Adverse-Events
+Primary scholarly record: CHEST 2024 abstract, "Hypercapnic respiratory failure is infrequently reported as an adverse event in clinical trials"
+DOI: https://doi.org/10.1016/j.chest.2024.06.3377
+Citation: Anderson-Bell D, Locke BW. CHEST. 2024;166(4):A5688.
+
+Purpose:
+This public repository contains code and author-owned poster materials for an abstract analyzing how often hypercapnic respiratory failure, hypoventilation, respiratory depression, and related adverse-event terms are reported in ClinicalTrials.gov structured trial results.
+
+Source data:
+- Du J, Shi X ClinicalTrials.gov structured results dataset.
+- Source paper: https://doi.org/10.1038/s41597-023-02869-7
+- Figshare collection: https://doi.org/10.6084/m9.figshare.c.6860254.v1
+- Expected local files are data/raw/csv/efficacy_df.csv and data/raw/csv/safety_df.csv.
+- Source data are public third-party data; link and cite the canonical records rather than committing mirrored archives.
+
+Primary workflow:
+```bash
+stata-mp -b do ClinicalTrialsGov.do data/raw outputs/stata
+```
+
+Default behavior:
+- If no arguments are supplied, ClinicalTrialsGov.do reads from data/raw and writes to outputs/stata.
+- Generated Stata logs, derived .dta files, and Excel exports belong under outputs/stata.
+- Root-level generated files such as by_arm_data.dta, by_trial_data.dta, trials_data.dta, "by arm data.xlsx", and "by trial data.xlsx" are legacy generated artifacts and should not be committed.
+
+Repository layout:
+- README.md: human-facing overview, run instructions, citation, and data boundaries.
+- CITATION.cff: structured repository and CHEST abstract citation metadata.
+- ClinicalTrialsGov.do: Stata workflow for ClinicalTrials.gov adverse-event aggregation.
+- FAERS access.ipynb: optional exploratory OpenFDA/FAERS notebook; not the canonical abstract workflow.
+- abstract/: author-owned CHEST poster PDF and Markdown summary.
+- data_dictionary.md and data_dictionary.csv: variable/source/output dictionary.
+- AGENTS.md: repository-specific rules for future automated edits.
+
+Data and license boundaries:
+- No PHI or private clinical data are expected in this repository.
+- Do not add local data mirrors, OpenFDA caches, Stata derived datasets, generated Excel outputs, notebook outputs, or third-party reference PDFs to the public branch.
+- Repository code and author-owned documentation are MIT licensed.
+- External datasets, publisher pages, and third-party reference materials remain under their own terms.
+
+Agent cautions:
+- This is an abstract/poster repository, not a full manuscript repository.
+- There is no PMCID for this CHEST abstract. Do not invent a PMCID or add unrelated PMCID records.
+- Preserve legacy Stata variable spellings such as pos_hypoven_* unless a scientific refactor is explicitly requested; document them in the data dictionary.
+- Keep the CHEST abstract DOI 10.1016/j.chest.2024.06.3377 as the primary scholarly citation.
+- Keep the Du/Shi Scientific Data and Figshare records as source-data citations, not as the repository's primary scholarly output.
