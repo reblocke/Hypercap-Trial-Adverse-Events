@@ -1,10 +1,53 @@
+# OS and editor files
+.DS_Store
 Thumbs.db
-.*
 ~*
-Results and Figures/
+*.swp
+*.swo
+
+# Python and notebook artifacts
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+.cache/
+
+# Local source data and generated outputs
 Data/
-ae by arm data.xlsx
-openfda_cache.sqlite
+data/
+outputs/
+Results and Figures/
+Data.zip
+
+# Stata generated artifacts
 *.dta
+*.gph
+*.grec
+*.log
+*.smcl
+*.ster
+*.tmp
+
+# Generated exports and local caches
+ae by arm data.xlsx
+ae_by_arm_data.xlsx
 by arm data.xlsx
+by_arm_data.xlsx
 by trial data.xlsx
+by_trial_data.xlsx
+SE-table_Update-7_FINAL_022822.xlsx
+openfda_cache.sqlite
+*.sqlite
+*.db
+
+# Local drafts and third-party reference materials
+Drafts/
+*.doc
+*.docx
+*.pptx
+Drug Safety 2023 EHR for safety.pdf
+How FDA defines ADE.pdf
+ML for ADE.pdf
+Respiratory-Depression-5.pptx
